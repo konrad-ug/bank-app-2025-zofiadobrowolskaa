@@ -7,3 +7,4 @@ class TestAccount:
         assert account.first_name == "John"
         assert account.last_name == "Doe"
         assert account.balance == 0.0
+        assert account.pesel == "12345678901"
