@@ -23,7 +23,7 @@ class TestAccount:
     
 
     def test_correct_promo_code(self):
-        account = Account("John", "Doe", "12345678901", promo_code="PROM_123")
+        account = Account("John", "Doe", "12345678901", promo_code="PROM_XYZ")
         assert account.balance == 50.0
 
     def test_promo_code_suffix_too_long(self):
@@ -35,5 +35,5 @@ class TestAccount:
         assert account.balance == 0.0
 
     def test_promo_code_wrong_prefix(self):
-        account = Account("John", "Doe", "12345678901", promo_code="PRO_XYZ")
+        account = Account("John", "Doe", "12345678901", promo_code="PRO-XYZ")
         assert account.balance == 0.0
