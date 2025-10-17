@@ -36,7 +36,7 @@ class TestAccount:
         assert account.balance == 0.0
 
     def test_promo_code_wrong_prefix(self):
-        account = Account("John", "Doe", "64051212345", promo_code="PRO-XYZ")
+        account = Account("John", "Doe", "64051212345", promo_code="PROM-XYZ")
         assert account.balance == 0.0
 
     # feature 5
