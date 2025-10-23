@@ -39,3 +39,20 @@ class Account:
         if year is None:
             return False
         return year > 1960
+    
+    def incoming_transfer(self, amount):
+        if not isinstance(amount, (int, float)) or amount <= 0:
+            return False
+        
+        self.balance += amount
+        return True
+    
+    def outgoing_transfer(self, amount):
+        if not isinstance(amount, (int, float)) or amount <= 0:
+            return False
+        
+        if amount > self.balance:
+            return False
+        
+        self.balance -= amount
+        return True
