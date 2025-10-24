@@ -70,3 +70,22 @@ class TestAccount:
     def test_account_with_promo_and_old_age_gets_no_promo(self):
         account = PersonalAccount("John", "Doe", "59010112345", promo_code="PROM_XYZ")
         assert account.balance == 0.0
+
+    # feature 8
+    def test_express_transfer_with_sufficient_balance(self):
+        account = PersonalAccount("John", "Doe", "64051212345")
+        account.balance = 100.0
+        account.outgoing_express_transfer(50.0)
+        assert account.balance == 49.0
+
+    def test_express_transfer_allow_negative(self):
+        account = PersonalAccount("John", "Doe", "64051212345")
+        account.balance = 0.5
+        account.outgoing_express_transfer(0.5)
+        assert account.balance == -1.0
+    
+    def test_express_transfer_not_allowed_below_limit(self):
+        account = CompanyAccount("MyCompany", "1234567890")
+        account.balance = 5.0
+        account.outgoing_express_transfer(15.0)
+        assert account.balance == 5.0

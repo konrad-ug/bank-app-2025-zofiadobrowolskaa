@@ -8,3 +8,14 @@ class CompanyAccount(Account):
 
     def is_nip_valid(self, nip):
         return isinstance(nip, str) and len(nip) == 10 and nip.isdigit()
+    
+    def outgoing_express_transfer(self, amount):
+        fee = 5.0
+        max_overdraft = fee # saldo może zejść poniżej 0 maksymalnie o kwotę opłaty
+
+        if self.balance - amount - fee < -max_overdraft:
+            return self.balance
+        
+        self.balance -= amount + fee
+        return self.balance
+    

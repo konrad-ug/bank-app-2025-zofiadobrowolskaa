@@ -7,6 +7,7 @@ class TestCompanyAccount:
         assert account.nip == "1234567890"
         assert account.balance == 0.0
 
+    # feature 7
     def test_too_short_nip(self):
         account = CompanyAccount("MyCompany", "123")
         assert account.nip == "Invalid"
@@ -25,3 +26,22 @@ class TestCompanyAccount:
         account.balance = 200.0
         account.outgoing_transfer(50.0)
         assert account.balance == 150.0
+    
+    # feature 8
+    def test_express_transfer_company_with_sufficient_balance(self):
+        account = CompanyAccount("MyCompany", "1234567890")
+        account.balance = 100.0
+        account.outgoing_express_transfer(50.0)
+        assert account.balance == 45.0
+
+    def test_express_transfer_company_allow_negative(self):
+        account = CompanyAccount("MyCompany", "1234567890")
+        account.balance = 2.0
+        account.outgoing_express_transfer(2.0)
+        assert account.balance == -5.0
+    
+    def test_express_transfer_company_not_allowed_below_limit(self):
+        account = CompanyAccount("MyCompany", "1234567890")
+        account.balance = 5.0
+        account.outgoing_express_transfer(15.0)
+        assert account.balance == 5.0

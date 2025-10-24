@@ -6,9 +6,7 @@ class PersonalAccount(Account):
         self.first_name = first_name
         self.last_name = last_name
         self.pesel = pesel if self.is_pesel_valid(pesel) else 'Invalid'
-
-        if self.is_promo_code_valid(promo_code) and self.can_receive_promo(pesel):
-            self.balance = 50.0
+        self.balance = 50.0 if self.is_promo_code_valid(promo_code) and self.can_receive_promo(pesel) else 0.0
 
     def is_pesel_valid(self, pesel):
         return isinstance(pesel, str) and len(pesel) == 11 and pesel.isdigit()
@@ -41,3 +39,13 @@ class PersonalAccount(Account):
         if year is None:
             return False
         return year > 1960
+    
+    def outgoing_express_transfer(self, amount):
+        fee = 1.0
+        max_overdraft = fee # saldo może zejść poniżej 0 maksymalnie o kwotę opłaty
+
+        if self.balance - amount - fee < -max_overdraft:
+            return self.balance
+        
+        self.balance -= amount + fee
+        return self.balance
