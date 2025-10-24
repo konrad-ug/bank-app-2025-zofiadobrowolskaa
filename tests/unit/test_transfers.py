@@ -18,7 +18,7 @@ class TestTransfers:
         account.outgoing_transfer(30.0)
         assert account.balance == 0.0
     
-    def test_transfer_insufficient_funds(self):
+    def test_incoming_negative_transfer(self):
         account = Account("John", "Doe", "05290706768")
         account.incoming_transfer(-20.0)
         assert account.balance == 0.0
