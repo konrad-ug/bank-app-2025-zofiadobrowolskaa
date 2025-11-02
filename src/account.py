@@ -11,5 +11,3 @@ class Account:
         if 0 < amount <= self.balance:
             self.balance -= amount
     
-    def temp_method(self):
-        return True
