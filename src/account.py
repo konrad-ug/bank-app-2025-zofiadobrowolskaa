@@ -10,3 +10,4 @@ class Account:
     def outgoing_transfer(self, amount: float):
         if 0 < amount <= self.balance:
             self.balance -= amount
+    
