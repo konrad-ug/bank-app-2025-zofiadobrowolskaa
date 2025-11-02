@@ -48,4 +48,6 @@ class PersonalAccount(Account):
             return self.balance
         
         self.balance -= amount + fee
+        self.history.append(-amount)
+        self.history.append(-fee)
         return self.balance
