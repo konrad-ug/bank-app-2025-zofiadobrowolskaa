@@ -37,8 +37,22 @@ class TestAccount:
     def test_promo_code_wrong_prefix(self):
         account = PersonalAccount("John", "Doe", "64051212345", promo_code="PROM-XYZ")
         assert account.balance == 0.0
+    
+    def test_promo_code_not_string(self):
+        account = PersonalAccount("John", "Doe", "64051212345", promo_code=12345)
+        assert account.balance == 0.0
 
     # feature 5
+    def test_get_birth_year_invalid_pesel(self):
+        account = PersonalAccount("John", "Doe", "12345678901")
+        result = account.get_birth_year_from_pesel("invalid_pesel")
+        assert result is None
+    
+    def test_can_receive_promo_invalid_pesel(self):
+        account = PersonalAccount("John", "Doe", "12345678901")
+        result = account.can_receive_promo("invalid_pesel")
+        assert result is False
+
     def test_birth_year_1800s(self):
         account = PersonalAccount("John", "Doe", "86910112345")
         assert account.get_birth_year_from_pesel("86910112345") == 1886
@@ -85,7 +99,14 @@ class TestAccount:
         assert account.balance == -1.0
     
     def test_express_transfer_not_allowed_below_limit(self):
-        account = CompanyAccount("MyCompany", "1234567890")
+        account = PersonalAccount("John", "Doe", "64051212345")
         account.balance = 5.0
         account.outgoing_express_transfer(15.0)
         assert account.balance == 5.0
+    
+    def test_express_transfer_blocked_when_too_low_balance(self):
+        account = PersonalAccount("John", "Doe", "64051212345")
+        account.balance = 0.0
+        result = account.outgoing_express_transfer(5.0)
+        assert result == 0.0
+
