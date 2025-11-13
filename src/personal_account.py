@@ -52,7 +52,7 @@ class PersonalAccount(Account):
         self.history.append(-fee)
         return self.balance
     
-    def submit_for_loan(self, amount: float):
+    def submit_for_loan(self, amount):
         if len(self.history) >= 3 and all(t > 0 for t in self.history[-3:]):
             self.balance += amount
             self.history.append(amount)
