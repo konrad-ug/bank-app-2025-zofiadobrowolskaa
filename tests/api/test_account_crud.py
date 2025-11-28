@@ -16,7 +16,7 @@ def test_sample_account():
     assert response.json()["message"] == "Account created"
 
 def test_get_account_by_pesel(sample_account):
-    response = requests.get(f"{url}/{sample_account["pesel"]}")
+    response = requests.get(f"{url}/{sample_account['pesel']}")
     assert response.status_code == 200
     data = response.json()
     assert data["pesel"] == sample_account["pesel"]
@@ -29,11 +29,11 @@ def test_get_account_not_found():
 
 def test_update_account(sample_account):
     update_data = {"name": "Bob", "surname": "Williams"}
-    response = requests.patch(f"{url}/{sample_account["pesel"]}", json=update_data)
+    response = requests.patch(f"{url}/{sample_account['pesel']}", json=update_data)
     assert response.status_code == 200
     assert response.json()["message"] == "Account updated"
 
 def test_delete_account(sample_account):
-    response = requests.delete(f"{url}/{sample_account["pesel"]}")
+    response = requests.delete(f"{url}/{sample_account['pesel']}")
     assert response.status_code == 200
     assert response.json()["message"] == "Account deleted"
