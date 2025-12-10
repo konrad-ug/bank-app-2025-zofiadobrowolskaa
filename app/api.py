@@ -13,6 +13,10 @@ def create_account():
     if not data:
         return jsonify({"message": "Invalid body"}), 400
 
+    existing_account = registry.find_by_pesel(data["pesel"])
+    if existing_account:
+        return jsonify({"message": "Account with this PESEL already exists"}), 409
+
     account = PersonalAccount(data["name"], data["surname"], data["pesel"])
     registry.add_account(account)
     return jsonify({"message": "Account created"}), 201
@@ -89,4 +93,3 @@ def delete_account(pesel):
     registry.accounts.remove(account)
 
     return jsonify({"message": "Account deleted"}), 200
-

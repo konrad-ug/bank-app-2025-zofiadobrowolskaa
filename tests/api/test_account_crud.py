@@ -57,3 +57,14 @@ class TestAccountAPI:
 
         get_res = requests.get(f"{self.url}/{self.account_details['pesel']}")
         assert get_res.status_code == 404
+    
+    def test_create_account_with_existing_pesel(self):
+        duplicate_account = {
+            "name": "Duplicate",
+            "surname": "User",
+            "pesel": self.account_details["pesel"]
+        }
+        response = requests.post(self.url, json=duplicate_account)
+        assert response.status_code == 409
+        assert response.json()["message"] == "Account with this PESEL already exists"
+
