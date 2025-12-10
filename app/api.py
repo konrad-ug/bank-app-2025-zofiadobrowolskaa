@@ -93,3 +93,32 @@ def delete_account(pesel):
     registry.accounts.remove(account)
 
     return jsonify({"message": "Account deleted"}), 200
+
+@app.route("/api/accounts/<pesel>/transfer", methods=["POST"])
+def execute_transfer(pesel):
+    account = registry.find_by_pesel(pesel)
+    if not account:
+        return jsonify({"message": "Account not found"}), 404
+
+    data = request.get_json()
+    if not data or "amount" not in data or "type" not in data:
+        return jsonify({"message": "Request body must contain 'amount' and 'type'"}), 400
+
+    amount = data["amount"]
+    transfer_type = data["type"]
+
+    if transfer_type == "incoming":
+        account.incoming_transfer(amount)
+        return jsonify({"message": "Transfer successful"}), 200
+
+    elif transfer_type == "outgoing":
+        if account.outgoing_transfer(amount):
+            return jsonify({"message": "Transfer successful"}), 200
+        return jsonify({"message": "Insufficient funds"}), 422
+    
+    elif transfer_type == "express":
+        if account.outgoing_express_transfer(amount):
+            return jsonify({"message": "Transfer successful"}), 200
+        return jsonify({"message": "Insufficient funds for express transfer"}), 422
+    else:
+        return jsonify({"message": "Unknown transfer type"}), 400

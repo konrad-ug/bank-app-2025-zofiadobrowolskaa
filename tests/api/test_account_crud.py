@@ -68,3 +68,34 @@ class TestAccountAPI:
         assert response.status_code == 409
         assert response.json()["message"] == "Account with this PESEL already exists"
 
+    def test_incoming_transfer(self):
+        transfer_data = {"amount": 500, "type": "incoming"}
+        response = requests.post(f"{self.url}/{self.account_details['pesel']}/transfer", json=transfer_data)
+        assert response.status_code == 200
+        assert response.json()["message"] == "Transfer successful"
+
+    def test_outgoing_transfer_success(self):
+        requests.post(f"{self.url}/{self.account_details['pesel']}/transfer", json={"amount": 1000, "type": "incoming"})
+        
+        transfer_data = {"amount": 500, "type": "outgoing"}
+        response = requests.post(f"{self.url}/{self.account_details['pesel']}/transfer", json=transfer_data)
+        assert response.status_code == 200
+        assert response.json()["message"] == "Transfer successful"
+
+    def test_outgoing_transfer_failure(self):
+        transfer_data = {"amount": 5000, "type": "outgoing"}
+        response = requests.post(f"{self.url}/{self.account_details['pesel']}/transfer", json=transfer_data)
+        assert response.status_code == 422
+        assert response.json()["message"] == "Insufficient funds"
+
+    def test_transfer_unknown_account(self):
+        transfer_data = {"amount": 100, "type": "incoming"}
+        response = requests.post(f"{self.url}/0000000/transfer", json=transfer_data)
+        assert response.status_code == 404
+        assert response.json()["message"] == "Account not found"
+
+    def test_transfer_unknown_type(self):
+        transfer_data = {"amount": 100, "type": "invalid"}
+        response = requests.post(f"{self.url}/{self.account_details['pesel']}/transfer", json=transfer_data)
+        assert response.status_code == 400
+        assert response.json()["message"] == "Unknown transfer type"
