@@ -13,4 +13,7 @@ class Account:
         if 0 < amount <= self.balance:
             self.balance -= amount
             self.history.append(-amount)
+            return True
+        return False
+
     
