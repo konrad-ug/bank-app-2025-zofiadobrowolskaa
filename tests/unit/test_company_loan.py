@@ -1,9 +1,13 @@
 import pytest
+from unittest.mock import patch
 from src.company_account import CompanyAccount
 
 @pytest.fixture()
 def company():
-    return CompanyAccount("MyCompany", "1234567890")
+    # użycie 'with', aby mock działał tylko podczas tworzenia obiektu
+    with patch('src.company_account.CompanyAccount.check_mf') as mock_check:
+        mock_check.return_value = True
+        return CompanyAccount("MyCompany", "1234567890")
 
 class TestCompanyLoan:
 
