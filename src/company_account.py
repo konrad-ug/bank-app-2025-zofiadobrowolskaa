@@ -21,9 +21,9 @@ class CompanyAccount(Account):
 
     def check_mf(self, nip):
         url_mf = os.getenv('BANK_APP_MF_URL', 'https://wl-test.mf.gov.pl')
-        date = date.today().strftime("%Y-%m-%d")
+        today = date.today().strftime("%Y-%m-%d")
         
-        url = f"{url_mf}/api/search/nip/{nip}?date={date}"
+        url = f"{url_mf}/api/search/nip/{nip}?date={today}"
         
         res = requests.get(url)
         data = res.json()
