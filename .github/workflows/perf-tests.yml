@@ -28,4 +28,4 @@ jobs:
         sleep 5
     - name: Execute API Performance tests
       run: |
-        python3 -m pytest src/tests/perf
+        python3 -m pytest tests/perf

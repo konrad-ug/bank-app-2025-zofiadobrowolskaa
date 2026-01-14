@@ -27,4 +27,4 @@ jobs:
         sleep 5
     - name: Execute API tests
       run: |
-        python3 -m pytest src/tests/api
+        python3 -m pytest tests/api
