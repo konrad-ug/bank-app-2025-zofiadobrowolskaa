@@ -30,14 +30,8 @@ class CompanyAccount(Account):
         
         print(f"MF Response: {data}")
 
-        try:
-            info = data.get("result", {}).get("subject", {})
-            if info and info.get("statusVat") == "Czynny":
-                return True
-        except:
-            pass
-            
-        return False
+        info = data.get("result", {}).get("subject", {})
+        return info.get("statusVat") == "Czynny"
         
     def outgoing_express_transfer(self, amount):
         fee = 5.0
