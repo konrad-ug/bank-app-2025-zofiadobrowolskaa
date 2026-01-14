@@ -21,10 +21,9 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Start flask
       run: |
-        export FLASK_APP=src/app/api.py
-        export PYTHONPATH=$GITHUB_WORKSPACE/src
-        flask run --host=0.0.0.0 &
-        sleep 15
+        export FLASK_APP=app/api.py
+        export PYTHONPATH=$GITHUB_WORKSPACE
+        flask run &
     - name: Execute API tests
       run: |
         python3 -m pytest tests/api
