@@ -7,7 +7,7 @@ class TestPerf:
         "surname": "Doe",
         "pesel": "12345678901"
     }
-    url = "http://localhost:5000/api/accounts"
+    url = "http://127.0.0.1:5000/api/accounts"
     iteration_count = 100
     timeout = 0.5
 
