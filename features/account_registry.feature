@@ -32,3 +32,23 @@ Scenario: User is able to delete created account
   When I delete account with pesel: "01092909876"
   Then Account with pesel "01092909876" does not exist in registry
   And Number of accounts in registry equals: "0"
+
+Scenario: User is able to perform an incoming transfer
+  Given Account registry is empty
+  And I create an account using name: "Jan", last name: "Kowalski", pesel: "12345678901"
+  When I perform an "incoming" transfer of "100" to account with pesel: "12345678901"
+  Then Account with pesel "12345678901" has "balance" equal to "100"
+
+Scenario: User is able to perform an outgoing transfer
+  Given Account registry is empty
+  And I create an account using name: "Jan", last name: "Kowalski", pesel: "12345678901"
+  And I perform an "incoming" transfer of "100" to account with pesel: "12345678901"
+  When I perform an "outgoing" transfer of "40" to account with pesel: "12345678901"
+  Then Account with pesel "12345678901" has "balance" equal to "60"
+
+Scenario: User is able to perform an express transfer with fee
+  Given Account registry is empty
+  And I create an account using name: "Jan", last name: "Kowalski", pesel: "12345678901"
+  And I perform an "incoming" transfer of "100" to account with pesel: "12345678901"
+  When I perform an "express" transfer of "50" to account with pesel: "12345678901"
+  Then Account with pesel "12345678901" has "balance" equal to "49"
