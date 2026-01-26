@@ -54,4 +54,20 @@ def update_field(context, field, pesel, value):
 @then('Account with pesel "{pesel}" has "{field}" equal to "{value}"')
 def field_equals_to(context, pesel, field, value):
     response = requests.get(URL + f"/api/accounts/{pesel}")
-    assert response.json()[field] == value
+    api_data = response.json()
+    
+    actual_value = api_data[field]
+    
+    if field == "balance":
+        assert float(actual_value) == float(value)
+    else:
+        assert str(actual_value) == str(value)
+
+@step('I perform an "{transfer_type}" transfer of "{amount}" to account with pesel: "{pesel}"')
+def perform_transfer(context, transfer_type, amount, pesel):
+    json_body = {
+        "type": transfer_type,
+        "amount": float(amount)
+    }
+    response = requests.post(URL + f"/api/accounts/{pesel}/transfer", json=json_body)
+    assert response.status_code == 200
