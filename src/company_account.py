@@ -55,5 +55,14 @@ class CompanyAccount(Account):
         self.balance += amount
         self.history.append(amount)
         return True
+    
+    def to_dict(self):
+        data = super().to_dict()
+        data.update({
+            "company_name": self.company_name,
+            "nip": self.nip,
+            "type": "company"
+        })
+        return data
 
     
