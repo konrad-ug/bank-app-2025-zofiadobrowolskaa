@@ -60,3 +60,17 @@ class TestCompanyAccount:
         mock_check.return_value = False
         with pytest.raises(ValueError, match="Company not registered!!"):
             CompanyAccount("FraudCorp", "1111111111")
+    
+    def test_to_dict(self, mock_check):
+        mock_check.return_value = True
+        account = CompanyAccount("MyCompany", "1234567890")
+        account.balance = 100.0
+        account.history = [100.0]
+        
+        data = account.to_dict()
+        
+        assert data["company_name"] == "MyCompany"
+        assert data["nip"] == "1234567890"
+        assert data["type"] == "company"
+        assert data["balance"] == 100.0
+        assert data["history"] == [100.0]
