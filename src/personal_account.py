@@ -64,4 +64,14 @@ class PersonalAccount(Account):
             return True
 
         return False
+    
+    def to_dict(self):
+        data = super().to_dict()
+        data.update({
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "pesel": self.pesel,
+            "type": "personal"
+        })
+        return data
 

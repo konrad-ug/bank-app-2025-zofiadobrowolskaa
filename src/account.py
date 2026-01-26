@@ -29,4 +29,8 @@ class Account:
         client = SMTPClient()
         return client.send(subject, content, email_address)
 
-    
+    def to_dict(self):
+        return {
+            "balance": self.balance,
+            "history": self.history
+        }
